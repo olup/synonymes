@@ -1,4 +1,4 @@
-module github.com/olup/api-synonymes
+module github.com/olup/api
 
 go 1.13
 

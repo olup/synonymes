@@ -1,0 +1,4 @@
+{
+  "builds": [{ "src": "index.go", "use": "@now/go" }],
+  "routes": [{ "src": "/(.*)", "dest": "/index.go?word=$1" }]
+}

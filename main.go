@@ -1,28 +1,25 @@
 package main
 
 import (
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
+	"encoding/json"
+	"io/ioutil"
+	"log"
+	"os"
+
+	handler "github.com/olup/api/handler"
 )
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 func main() {
-	dictionary := open()
+	dictionary := handler.Open()
+	log.Println("Loaded Dictionary")
 
-	server := gin.Default()
+	os.MkdirAll("./build", os.ModePerm)
 
-	server.Use(cors.Default())
+	for word, entry := range dictionary {
+		jsonData, _ := json.MarshalIndent(entry, "", " ")
+		ioutil.WriteFile("./build/"+word, jsonData, 0644)
+	}
 
-	server.GET("/:word", func(c *gin.Context) {
-		word := c.Params.ByName("word")
-		c.JSON(200, dictionary[word])
-	})
-
-	server.Run(":5000")
+	log.Println("File generated")
 
 }
